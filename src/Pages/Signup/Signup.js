@@ -1,14 +1,14 @@
 import { css, media } from 'glamor';
 import React from 'react'
-import { UNSAFE_DataRouterStateContext } from 'react-router-dom';
 import SignupComponent from '../../Components/SignupComponent'
 import useWindowDimensions from '../../Services/WindowDimensions';
+
 
 const Signup = () => {
 
     const { height, width } = useWindowDimensions();
 
-    css.global('html, body', { padding: 0, margin: 0, boxSizing: 'border-box', overflowY: 'hidden' });
+    css.global('html, body', { padding: 0, margin: 0, boxSizing: 'border-box', overflowX: 'hidden', overflowY: 'scrollable' });
 
     const SignupStyle = {
 
@@ -45,7 +45,7 @@ const Signup = () => {
                 height: '100vh',
                 backgroundColor: '#f5f5f5',
                 userSelect: 'none',
-                zIndex: 1
+                zIndex: 2
             }),
         ),
 
@@ -66,60 +66,48 @@ const Signup = () => {
                 fontSize: width * 0.07,
                 textTransform: 'uppercase',
                 fontWeight: '900',
-                textShadow: "2px 2px 4px rgba(55, 54, 54, 0.4)",
                 color: '#4a148c',
-                transition: 'all 0.4s ease-in',
+                letterSpacing: '4',
+                textShadow: "4px 4px 4px rgba(55, 54, 54, 0.6)",
+                transition: 'all 0.2s ease-in',
+                zIndex: 10,
                 '::after': {
                     content: " ",
-                    height: height*1,
-                    width: width*0.4,
-                    transform: 'rotate(40deg)',
+                    height: height * 0.7,
+                    width: width * 0.4,
                     background: '#e1bee7',
-                    position: 'absolute',
+                    position: 'fixed',
                     webkitTransition: 'all 0.5s',
                     transition: 'all 0.5s',
-                    top: height*1,
-                    left: -width*0.4,
-                    zIndex: '-1',
-                    borderBottomRightRadius: '200px'
+                    top: 0,
+                    left: 0,
+                    zIndex: -1,
+                    borderRadius: '0% 100% 80% 0% / 0% 100% 20% 0%'
                 },
                 '::before': {
                     content: 'Concatenate Perceptions',
-                    fontSize: '1.6rem',
+                    fontSize: width * 0.014,
                     textShadow: 'none',
                     position: 'absolute',
-                    top: height*1.2,
                     transition: 'all 0.5s',
                     fontWeight: 400,
                     letterSpacing: '1px',
                     wordSpacing: '4px',
                     color: '#f5f5f5',
-                    height: height*0.1,
                     textAlign: 'center',
-                    paddingTop: (height*0.1)*0.25,
-                    width: width*0.41,
+                    padding: 20,
+                    paddingLeft: 25,
+                    paddingRight: 25,
                     borderRadius: '40px',
-                    boxShadow: '1px 1px 2px rgba(0,0,0,0.5)'
-                },
-                ':hover': {
-                    //textShadow: '-2px 2px 0 #4a148c, 2px 2px 0 #4a148c, 2px -2px 0 #4a148c, -2px -2px 0 #4a148c',
-                    //color: '#7b1fa2',
-                    textShadow: "4px 4px 4px rgba(55, 54, 54, 0.6)",
-                    transition: 'all 0.2s ease-in',
-                },
-                ':hover:after': {
-                    top: -height*0.4,
-                    left: -width*0.04,
-                },
-                ':hover:before': {
-                    top: height*0.2 + width*0.07 + 50,
+                    boxShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                    top: height * 0.2 + width * 0.07 + 70,
                     backgroundColor: '#4a148c',
-                    left: (width/2)*0.1,
-                }
+                    left: (width / 2) * 0.1,
+                },
             }),
         ),
 
-    
+
     }
 
     return (
@@ -127,7 +115,7 @@ const Signup = () => {
             <div className=' col-lg-6 col-sm-12 col-md-6 col-xs-12 flex-column' {...SignupStyle.leftContainer}>
                 <p {...SignupStyle.logo}>Bloggios</p>
             </div>
-            <div className='col-lg-6 col-sm-12 col-md-6 col-xs-12 d-flex'>
+            <div className='col-lg-6 col-sm-12 col-md-6 col-xs-12 d-flex justify-content-center align-items-center'>
                 <SignupComponent />
             </div>
         </div>

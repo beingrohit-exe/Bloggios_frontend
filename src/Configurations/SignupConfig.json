@@ -1,0 +1,32 @@
+{
+    "fields": [
+        {
+            "label": "Name",
+            "placeholder": "Enter Name",
+            "type": "text",
+            "icon": "fa-user",
+            "constraint": "name"
+        },
+        {
+            "label": "Email",
+            "placeholder": "Enter Email",
+            "type": "text",
+            "icon": "fa-envelope",
+            "constraint": "email"
+        },
+        {
+            "label": "Username",
+            "placeholder": "Enter Username",
+            "type": "text",
+            "icon": "fa-id-badge",
+            "constraint": "username"
+        },
+        {
+            "label": "Password",
+            "placeholder": "Enter Password",
+            "type": "password",
+            "icon": "fa-lock",
+            "constraint": "password"
+        }
+    ]
+}
