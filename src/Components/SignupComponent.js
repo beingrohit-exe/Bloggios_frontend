@@ -3,12 +3,15 @@ import React, { useEffect, useState } from 'react'
 import useWindowDimensions from '../Services/WindowDimensions';
 import CustomTextInput from './Common/CustomTextInput';
 import SignupConfig from '../Configurations/SignupConfig.json'
-import { Register } from '../RestService/UserService';
+import { CheckEmail, CheckUsername, Register } from '../RestService/UserService';
+import { toast } from 'react-toastify';
 
-const SignupComponent = () => {
+const SignupComponent = (props) => {
 
   const { height, width } = useWindowDimensions();
   const fieldsData = SignupConfig.fields;
+  const [callApi, setCallApi] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState({
     name: '',
@@ -17,16 +20,33 @@ const SignupComponent = () => {
     password: ''
   })
 
-  const [eventValue, setEventValue] = useState("");
+  const [error, setError] = useState({
+    errors: {},
+    isError: false,
+  })
+
+  const [endIconData, setEndIconData] = useState({
+    username: '',
+    email: '',
+    name: '',
+    password: ''
+  })
+
+  const [endIconColor, setEndIconColor] = useState({
+    username: '',
+    email: '',
+    name: '',
+    password: ''
+  })
 
   useEffect(() => {
-    console.log(eventValue)
-  }, [data])
+    console.log(error)
+  }, [error])
 
   const handleChange = (event, property) => {
     setData({ ...data, [property]: event.target.value });
-    setEventValue(event.target.id)
   };
+
 
   const styles = {
 
@@ -45,9 +65,9 @@ const SignupComponent = () => {
         maxWidth: width * 0.3,
         minWidth: '28rem',
         height: 'auto',
-        backgroundColor: 'rgba(223, 223, 223, 0.8)',
+        backgroundColor: 'rgb(197 179 215)',
         borderRadius: 20,
-        border: '1.6px solid rgba(223, 223, 223, 0.8)',
+        border: '1.6px solid rgb(197 179 215)',
         flexDirection: 'column',
         boxShadow: '0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048),0 12.5px 10px rgba(0, 0, 0, 0.06),0 22.3px 17.9px rgba(0, 0, 0, 0.072),0 41.8px 33.4px rgba(0, 0, 0, 0.086),0 100px 80px rgba(0, 0, 0, 0.12)'
       })
@@ -65,12 +85,15 @@ const SignupComponent = () => {
       }),
       media('(min-width: 993px) ', {
         fontFamily: "'Montserrat', sans-serif",
-        padding: (width * 0.3) * 0.07,
-        fontSize: (height * 0.8) * 0.06,
-        fontWeight: 600,
+        padding: (width * 0.2) * 0.07,
+        paddingBottom: (width * 0.2) * 0.02,
+        fontSize: (height) * 0.06,
+        fontWeight: 800,
         alignSelf: 'center',
         wordSpacing: 4,
-        letterSpacing: 1,
+        letterSpacing: 8,
+        textTransform: 'uppercase',
+        textShadow: "2px 2px 6px rgba(55, 54, 54, 0.4)",
       }),
     ),
 
@@ -153,6 +176,7 @@ const SignupComponent = () => {
         letterSpacing: 4,
         borderRadius: '16px',
         transition: 'box-shadow 0.2s ease-in',
+        cursor: 'pointer',
         ':hover': {
           boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.4)',
         },
@@ -165,6 +189,7 @@ const SignupComponent = () => {
   }
 
   const handleSubmit = (event) => {
+    setLoading(true)
     event.preventDefault();
     console.log(data)
     Register(data)
@@ -176,21 +201,61 @@ const SignupComponent = () => {
           username: '',
           password: ''
         });
+        setLoading(false)
       })
-      .catch((error)=> {
-        console.error(error)
+      .catch((exception) => {
+        console.error(exception)
+        setError({
+          errors: exception,
+          isError: true
+        })
+        props.mountedError(exception)
+        setLoading(false)
       })
   }
 
+  const handleKeyUpEvent = (event, property) => {
+    if (property === 'username' && data.username.length > 1) {
+      CheckUsername(data.username)
+        .then((response) => {
+          setCallApi(response)
+          if (!response) {
+            setEndIconData({ ...endIconData, [property]: 'fa-circle-check' });
+            setEndIconColor({ ...endIconColor, [property]: 'green' });
+          }
+          else {
+            setEndIconData({ ...endIconData, [property]: 'fa-circle-xmark' });
+            setEndIconColor({ ...endIconColor, [property]: 'red' });
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
+
+    else if (property === 'email' && data.email.length > 1) {
+      CheckEmail(data.email)
+        .then((response) => {
+          setCallApi(response)
+          if (!response) {
+            setEndIconData({...endIconData, [property]: 'fa-circle-check' });
+            setEndIconColor({ ...endIconColor, [property]: 'green' });
+          }
+          else {
+            setEndIconData({ ...endIconData, [property]: 'fa-circle-xmark' });
+            setEndIconColor({ ...endIconColor, [property]: 'red' });
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    }
+  }
+
   return (
-    <div className='d-flex' {...styles.card}>
-      <div {...styles.header}>Create Account</div>
-      <div {...styles.icons}>
-        <i style={{ color: 'red', textShadow: '1px 1px 2px rgba(55, 54, 54, 0.4)' }} className="fa-brands fa-google-plus"></i>
-        <i style={{ color: 'blue', textShadow: '1px 1px 2px rgba(55, 54, 54, 0.4)' }} className="fa-brands fa-facebook"></i>
-        <i style={{ color: '#000', textShadow: '1px 1px 2px rgba(55, 54, 54, 0.4)' }} className="fa-brands fa-github"></i>
-      </div>
-      <span style={{ textAlign: 'center', wordSpacing: 2, }}>Or use email for Registration</span>
+    <div className='d-flex' {...styles.card} >
+      <div {...styles.header}>Bloggios</div>
+      <span style={{ textAlign: 'center', wordSpacing: 2, fontSize: '25px'}}>Create Account</span>
       <div {...styles.body}>
         {fieldsData.map((mapData, key) =>
           <CustomTextInput label='Name'
@@ -201,7 +266,10 @@ const SignupComponent = () => {
             type={mapData.type}
             placeholder={mapData.label}
             onChangeData={(e) => handleChange(e, mapData.constraint)}
+            onKeyUp={(e) => handleKeyUpEvent(e, mapData.constraint)}
             id={mapData.constraint}
+            endIconColor={mapData.constraint === 'username' ? endIconColor.username : mapData.constraint === 'email' ? endIconColor.email : ''}
+            endIconCheck={mapData.constraint === 'username' ? endIconData.username : mapData.constraint === 'email' ? endIconData.email : ''}
             value={mapData.value === data.name ? data.name : mapData.value === data.email ? data.email : mapData.value === data.username ? data.username : data.password} />
         )}
       </div>
@@ -222,6 +290,7 @@ const SignupComponent = () => {
           textDecorationStyle: 'solid',
           textDecorationThickness: '2px',
           color: 'blue',
+          cursor: 'pointer'
         }}>
           Already have an Account ?
         </span>
