@@ -39,6 +39,7 @@ const CustomTextInput = (props) => {
                 borderRadius: '14px',
                 padding: 14,
                 transition: 'all 0.1s ease-in',
+                position: 'relative',
                 cursor: 'pointer',
                 ':hover': {
                     backgroundColor: 'rgba(255,255,255,0.4)',
@@ -94,6 +95,27 @@ const CustomTextInput = (props) => {
             })
         ),
 
+        endIcon: css(
+            media('(max-width: 576px)', {
+                backgroundColor: 'red'
+            }),
+            media('(min-width: 578px) and (max-width: 768px)', {
+                backgroundColor: 'green'
+            }),
+            media('(min-width: 769px) and (max-width: 992px)', {
+                backgroundColor: 'blue'
+            }),
+            media('(min-width: 993px) ', {
+                fontSize: size * 0.5,
+                position: 'absolute',
+                right: 0,
+                color: props.endIconColor,
+                marginRight: '16px',
+                ':hover': {
+                    textShadow: '1px 1px 2px rgba(55, 54, 54, 0.4)'
+                }
+            })
+        )
     }
     return (
         <div {...styles.main} onClick={() => handleClick()}>
@@ -106,7 +128,9 @@ const CustomTextInput = (props) => {
                 onChange={props.onChangeData}
                 value={props.valueData}
                 id={props.id}
+                onKeyUp={props.onKeyUp}
                 placeholder={props.placeholder} />
+            {props.endIconCheck && <i {...styles.endIcon} className={`fa-sharp fa-solid ${props.endIconCheck}`}></i>}
         </div>
     )
 }
