@@ -5,12 +5,15 @@ import man from '../../Images/man.png'
 import { useNavigate, useNavigation } from 'react-router-dom'
 import Landing from '../../Pages/Landing/Landing'
 import Signup from '../../Pages/Signup/Signup'
+import CustomModal from './CustomModal'
+import LoginComponent from '../LoginComponent'
 
 const UserNavbar = () => {
 
     const { height, width } = useWindowDimensions();
     const [dropdownShow, setDropdownShow] = useState(false);
     const navigation = useNavigate();
+    const [modalShown, setModalShown] = useState(false);
 
     const styles = {
         main: css(
@@ -169,69 +172,74 @@ const UserNavbar = () => {
             })
         )
     }
-    
+
     return (
-        <div className='d-flex flex-row justify-content-between' {...styles.main}>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'row',
-                height: 'auto',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 40,
-            }}>
-                <i {...styles.logoIcon} class="fa-solid fa-bars"></i>
-                <span style={{
-                    fontWeight: 500,
-                    letterSpacing: 4
-                }} {...styles.logoIcon}>BLOGGIOS</span>
-                <div {...styles.searchWrapper}>
-                    <input {...styles.searchInput} type="text" placeholder='Search' />
-                    <i className="fa-solid fa-magnifying-glass"></i>
-                </div>
-            </div>
-            <div>
-                <div {...styles.rightIcons}>
-                    <i className="fa-solid fa-bag-shopping"></i>
-                    <i style={{
-                        fontSize: 30,
-                        color: 'rgba(0, 0, 0, 1)'
-                    }} className="fa-regular fa-bell"></i>
-                    <i className="fa-solid fa-house-user"></i>
-                    <div style={{
-                        height: 40,
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        width: '2px'
-                    }} />
-                    <div
-                    onMouseOver={()=> setDropdownShow(true)} onMouseOut={()=> setDropdownShow(false)}
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: 10,
-                            cursor: 'pointer'
-                        }}>
-                        <div style={{
-                            height: 40,
-                            width: 40,
-                            borderRadius: '50%',
-                            display: 'flex'
-                        }}>
-                            <img width={40} height={40} src={man} alt="profile" />
-                        </div>
-                        <span style={{
-                            fontSize: '25px'
-                        }}>Profile</span>
+        <>
+            <div className='d-flex flex-row justify-content-between' {...styles.main}>
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    height: 'auto',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    gap: 40,
+                }}>
+                    <i {...styles.logoIcon} className="fa-solid fa-bars"></i>
+                    <span style={{
+                        fontWeight: 500,
+                        letterSpacing: 4
+                    }} {...styles.logoIcon}>BLOGGIOS</span>
+                    <div {...styles.searchWrapper}>
+                        <input {...styles.searchInput} type="text" placeholder='Search' />
+                        <i className="fa-solid fa-magnifying-glass"></i>
                     </div>
                 </div>
+                <div>
+                    <div {...styles.rightIcons}>
+                        <i className="fa-solid fa-bag-shopping"></i>
+                        <i style={{
+                            fontSize: 30,
+                            color: 'rgba(0, 0, 0, 1)'
+                        }} className="fa-regular fa-bell"></i>
+                        <i className="fa-solid fa-house-user"></i>
+                        <div style={{
+                            height: 40,
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            width: '2px'
+                        }} />
+                        <div
+                            onMouseOver={() => setDropdownShow(true)} onMouseOut={() => setDropdownShow(false)}
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                gap: 10,
+                                cursor: 'pointer'
+                            }}>
+                            <div style={{
+                                height: 40,
+                                width: 40,
+                                borderRadius: '50%',
+                                display: 'flex'
+                            }}>
+                                <img width={40} height={40} src={man} alt="profile" />
+                            </div>
+                            <span style={{
+                                fontSize: '25px'
+                            }}>Profile</span>
+                        </div>
+                    </div>
+                </div>
+                <div onMouseOver={() => setDropdownShow(true)} onMouseOut={() => setDropdownShow(false)} {...styles.dropDown}>
+                    <div {...styles.dropdownMenu} onClick={() => setModalShown(true)}>Login</div>
+                    <div {...styles.dropdownMenu} onClick={() => navigation('/signup')}>SignUp</div>
+                </div>
             </div>
-            <div onMouseOver={()=> setDropdownShow(true)} onMouseOut={()=> setDropdownShow(false)} {...styles.dropDown}>
-                <div {...styles.dropdownMenu} onClick={()=> navigation('/')}>Login</div>
-                <div {...styles.dropdownMenu} onClick={()=> navigation('/signup')}>SignUp</div>
-            </div>
-        </div>
+            <CustomModal showModal={modalShown} onClose={() => setModalShown(false)}>
+                <LoginComponent />
+            </CustomModal>
+        </>
     )
 }
 

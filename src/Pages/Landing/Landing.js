@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
 import LandingBase from '../../Components/Landing/LandingBase'
+import LoginComponent from '../../Components/LoginComponent'
 import CustomModalStyle from '../../Styles/CustomModalStyle.css'
 
 const Landing = () => {
@@ -9,7 +10,7 @@ const Landing = () => {
 
   return (
     <LandingBase>
-      
+      <LoginComponent/>
     </LandingBase>
   )
 }
