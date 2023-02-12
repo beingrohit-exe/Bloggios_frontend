@@ -1,0 +1,18 @@
+{
+    "fields": [
+        {
+            "label": "Username",
+            "placeholder": "Username",
+            "constraint": "username",
+            "icon": "fa-user",
+            "type": "text"
+        },
+        {
+            "label": "Password",
+            "placeholder": "Password",
+            "constraint": "password",
+            "icon": "fa-lock",
+            "type": "password"
+        }
+    ]
+}

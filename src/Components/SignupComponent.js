@@ -5,6 +5,7 @@ import CustomTextInput from './Common/CustomTextInput';
 import SignupConfig from '../Configurations/SignupConfig.json'
 import { CheckEmail, CheckUsername, Register } from '../RestService/UserService';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const SignupComponent = (props) => {
 
@@ -12,6 +13,7 @@ const SignupComponent = (props) => {
   const fieldsData = SignupConfig.fields;
   const [callApi, setCallApi] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     name: '',
@@ -94,6 +96,7 @@ const SignupComponent = (props) => {
         letterSpacing: 8,
         textTransform: 'uppercase',
         textShadow: "2px 2px 6px rgba(55, 54, 54, 0.4)",
+        cursor: 'pointer'
       }),
     ),
 
@@ -254,7 +257,7 @@ const SignupComponent = (props) => {
 
   return (
     <div className='d-flex' {...styles.card} >
-      <div {...styles.header}>Bloggios</div>
+      <div {...styles.header} onClick={()=> navigate('/')}>Bloggios</div>
       <span style={{ textAlign: 'center', wordSpacing: 2, fontSize: '25px'}}>Create Account</span>
       <div {...styles.body}>
         {fieldsData.map((mapData, key) =>
